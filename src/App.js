@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import ForgotPassword from "./pages/ForgotPassword";
 import Offers from "./pages/Offers";
 import Header from "./components/header";
+
   
 function App() {
   return (
