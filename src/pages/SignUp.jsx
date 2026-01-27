@@ -3,7 +3,8 @@ import { useState } from 'react'
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { Link } from "react-router-dom"
 import OAuth from '../components/OAuth';
-
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
+import {db} from '../firebase.js'
 
 export default function SignUp() {
   const[showPassword, setShowPassword] = useState(false);
@@ -14,6 +15,17 @@ export default function SignUp() {
   })
   const {name, email, password} = formData
 
+  async function onSubmit(e) {
+    e.preventDefault()
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log(user)
+    } catch (error) {
+      console.log(error);
+    }
+  }
   function onChange(e) {
     setFormData((prevState) =>({
       ...prevState,
@@ -36,7 +48,7 @@ export default function SignUp() {
         </div>
 
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}>
             <input type="text" id="name" value={name} onChange={onChange} placeholder='Full name' className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded mb-6"/>
             <input type="email" id="email" value={email} onChange={onChange} placeholder='Email address' className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded mb-6"/>
             <div className="relative mb-6">
